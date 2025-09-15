@@ -8,6 +8,14 @@
 
   "environment": "backtesting", // "live-paper", "backtesting", "live-interactive", "live-interactive-iqfeed"
 
+  // ************************************************
+  // ************ Configs for debugging *************
+  // ************************************************
+  "debug-mode": true,
+  "algorithm-creation-timeout": 3600,
+  "algorithm-manager-time-loop-maximum": 60,
+  // ************************************************
+
   // algorithm class selector
   "algorithm-type-name": "BasicTemplateFrameworkAlgorithm",
 

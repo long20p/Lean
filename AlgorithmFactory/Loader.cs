@@ -258,10 +258,10 @@ logging.captureWarnings(True)"
                     return false;
                 }
 
+                string resolvedAlgo = null;
                 if (types.Count > 1)
                 {
-                    // reshuffle type[0] to the resolved typename
-                    types[0] = _multipleTypeNameResolverFunction.Invoke(types);
+                    resolvedAlgo = _multipleTypeNameResolverFunction.Invoke(types);
 
                     if (string.IsNullOrEmpty(types[0]))
                     {
@@ -271,7 +271,7 @@ logging.captureWarnings(True)"
                     }
                 }
                 //Load the assembly into this AppDomain:
-                algorithmInstance = (IAlgorithm)assembly.CreateInstance(types[0], true);
+                algorithmInstance = (IAlgorithm)assembly.CreateInstance(resolvedAlgo ?? types[0], true);
 
                 if (algorithmInstance != null)
                 {

@@ -51,8 +51,11 @@ namespace QuantConnect.Securities.FutureOption
             { "ZC", (d, ld) => ContractMonthSerialLookupRule(Symbol.Create("ZC", SecurityType.Future, Market.CBOT), d, ld.Value) },
             { "ZN", (d, ld) => ContractMonthSerialLookupRule(Symbol.Create("ZN", SecurityType.Future, Market.CBOT), d, ld.Value) },
             { "ZS", (d, ld) => ContractMonthSerialLookupRule(Symbol.Create("ZS", SecurityType.Future, Market.CBOT), d, ld.Value) },
+            { "ZM", (d, ld) => ContractMonthSerialLookupRule(Symbol.Create("ZM", SecurityType.Future, Market.CBOT), d, ld.Value) },
             { "ZT", (d, ld) => ContractMonthSerialLookupRule(Symbol.Create("ZT", SecurityType.Future, Market.CBOT), d, ld.Value) },
             { "ZW", (d, ld) => ContractMonthSerialLookupRule(Symbol.Create("ZW", SecurityType.Future, Market.CBOT), d, ld.Value) },
+            { "ZL", (d, ld) => ContractMonthSerialLookupRule(Symbol.Create("ZL", SecurityType.Future, Market.CBOT), d, ld.Value) },
+            { "TN", (d, ld) => ContractMonthSerialLookupRule(Symbol.Create("TN", SecurityType.Future, Market.CBOT), d, ld.Value) },
 
             // COMEX
             { "HG", (d, _) => ContractMonthYearStartThreeMonthsThenEvenOddMonthsSkipRule(d, true) },
@@ -69,13 +72,22 @@ namespace QuantConnect.Securities.FutureOption
         {
             { "ZB", 1 },
             { "ZC", 1 },
+            { "ZM", 1 },
             { "ZN", 1 },
+            { "TN", 1 },
             { "ZS", 1 },
             { "ZT", 1 },
             { "ZW", 1 },
+            { "ZL", 1 },
             { "HG", 1 },
             { "GC", 1 },
-            { "SI", 1 }
+            { "SI", 1 },
+            { "UB", 1 },
+            { "ZO", 1 },
+            { "KE", 1 },
+            { "ZF", 1 },
+            { "LBR", 1 },
+            { "LBS", 1 }
         };
 
         /// <summary>
@@ -137,9 +149,7 @@ namespace QuantConnect.Securities.FutureOption
                 // Normalize by date first, normalize to a contract month date, then we want to get the contract
                 // month of the Future contract so we normalize by getting the delta between the expiration
                 // and the contract month.
-                var futureContractMonth = future.ID.Date.Date
-                    .AddDays(-future.ID.Date.Day + 1)
-                    .AddMonths(FuturesExpiryUtilityFunctions.GetDeltaBetweenContractMonthAndContractExpiry(future.ID.Symbol, future.ID.Date));
+                var futureContractMonth = FuturesExpiryUtilityFunctions.GetFutureContractMonth(future);
 
                 // We want a contract that is either the same as the contract month or greater
                 if (futureContractMonth < futureOptionContractMonth)

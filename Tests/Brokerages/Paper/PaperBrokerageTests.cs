@@ -144,7 +144,8 @@ namespace QuantConnect.Tests.Brokerages.Paper
                 results,
                 realTime,
                 nullLeanManager,
-                tokenSource
+                tokenSource,
+                new()
             );
 
             var postDividendCash = algorithm.Portfolio.CashBook[Currencies.USD].Amount;
@@ -152,6 +153,8 @@ namespace QuantConnect.Tests.Brokerages.Paper
             realTime.Exit();
             results.Exit();
             Assert.AreEqual(initializedCash + dividend.Distribution, postDividendCash);
+
+            transactions.Exit();
         }
 
         [Test]

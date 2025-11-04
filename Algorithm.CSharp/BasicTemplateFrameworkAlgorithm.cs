@@ -22,6 +22,8 @@ using QuantConnect.Algorithm.Framework.Risk;
 using QuantConnect.Algorithm.Framework.Selection;
 using QuantConnect.Orders;
 using QuantConnect.Interfaces;
+using QuantConnect.Data;
+using QuantConnect.Data.UniverseSelection;
 
 namespace QuantConnect.Algorithm.CSharp
 {
@@ -41,8 +43,8 @@ namespace QuantConnect.Algorithm.CSharp
             // Set requested data resolution
             UniverseSettings.Resolution = Resolution.Minute;
 
-            SetStartDate(2013, 10, 07);  //Set Start Date
-            SetEndDate(2013, 10, 11);    //Set End Date
+            SetStartDate(2025, 08, 07);  //Set Start Date
+            SetEndDate(2025, 08, 11);    //Set End Date
             SetCash(100000);             //Set Strategy Cash
 
             // Find more symbols here: http://quantconnect.com/data
@@ -62,8 +64,11 @@ namespace QuantConnect.Algorithm.CSharp
             // A Func<DateTime, DateTime>. In this case, we can use the pre-defined func at Expiry helper class
             // SetPortfolioConstruction(new EqualWeightingPortfolioConstructionModel(Expiry.EndOfWeek));
 
-            SetExecution(new ImmediateExecutionModel());
             SetRiskManagement(new MaximumDrawdownPercentPerSecurity(0.01m));
+
+            SetExecution(new ImmediateExecutionModel());
+
+            //AddUniverse(SelectUniverseSymbols);
         }
 
         public override void OnOrderEvent(OrderEvent orderEvent)
@@ -72,6 +77,21 @@ namespace QuantConnect.Algorithm.CSharp
             {
                 Debug($"Purchased Stock: {orderEvent.Symbol}");
             }
+        }
+
+        public override void OnData(Slice slice)
+        {
+            base.OnData(slice);
+        }
+
+        public override void OnSecuritiesChanged(SecurityChanges changes)
+        {
+            base.OnSecuritiesChanged(changes);
+        }
+
+        private IEnumerable<Symbol> SelectUniverseSymbols(IEnumerable<CoarseFundamental> coarse)
+        {
+            return Universe.Unchanged;
         }
 
         /// <summary>

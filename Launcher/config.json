@@ -14,10 +14,11 @@
   "debug-mode": true,
   "algorithm-creation-timeout": 3600,
   "algorithm-manager-time-loop-maximum": 60,
+  "results-destination-folder": "C:\\GitRepo\\Finance\\LeanFork\\Results",
   // ************************************************
 
   // algorithm class selector
-  "algorithm-type-name": "BasicTemplateFrameworkAlgorithm",
+  "algorithm-type-name": "ExperimentalAlgorithm",
 
   // Algorithm language selector - options CSharp, Python
   "algorithm-language": "CSharp",

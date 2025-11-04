@@ -13,21 +13,22 @@
  * limitations under the License.
 */
 
-using System.Linq;
-
-namespace QuantConnect.Indicators
+namespace QuantConnect.Algorithm.CSharp.Benchmarks
 {
     /// <summary>
-    /// The advance-decline ratio (ADR) compares the number of stocks 
-    /// that closed higher against the number of stocks 
-    /// that closed lower than their previous day's closing prices.
+    /// Benchmark Algorithm that adds SPX option chain but does not trade it.
+    /// This is an interesting benchmark because SPX option chains are large
     /// </summary>
-    public class AdvanceDeclineRatio : AdvanceDeclineIndicator
+    public class EmptySPXOptionChainBenchmark : QCAlgorithm
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AdvanceDeclineRatio"/> class
-        /// </summary>
-        public AdvanceDeclineRatio(string name = "A/D Ratio")
-            : base(name, (entries) => entries.Count(), (advance, decline) => decline == 0m ? advance : advance / decline) { }
+        public override void Initialize()
+        {
+            SetStartDate(2018, 1, 1);
+            SetEndDate(2020, 6, 1);
+
+            var index = AddIndex("SPX");
+            var option = AddOption(index);
+            option.SetFilter(x => x.IncludeWeeklys().Strikes(-30, 30).Expiration(0, 7));
+        }
     }
 }

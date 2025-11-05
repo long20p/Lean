@@ -1,0 +1,42 @@
+# ==============================================================================
+# Lean Algorithmic Trading Engine - .NET 9 Docker Image
+# ==============================================================================
+# This Dockerfile creates a containerized version of QuantConnect Lean
+# based on the official Microsoft .NET 9 runtime image.
+#
+# Build from solution root:
+#   docker build -f DockerfileNew -t lean-custom:latest .
+#
+# Build for Release:
+#   docker build -f DockerfileNew --build-arg CONFIGURATION=Release -t lean-custom:release .
+#
+# Run:
+#   docker run --rm -v "$(pwd)/Results:/Results" lean-custom:latest
+# ==============================================================================
+
+# Use official .NET 9 runtime as base image
+FROM mcr.microsoft.com/dotnet/runtime:9.0
+
+# Install dependencies that may be required by Lean
+RUN apt-get update
+
+WORKDIR /Lean
+
+# Build argument for configuration (Debug or Release)
+ARG CONFIGURATION=Debug
+
+# Copy all built binaries from the specified configuration
+COPY Launcher/bin/${CONFIGURATION}/ ./
+
+# Copy configuration file
+COPY Launcher/config.docker.json ./config.json
+
+# Optional: Copy data directory for backtesting
+COPY Data ./Data
+
+# Create Results directory for output
+RUN mkdir -p /Results
+
+# Set the entry point to run the Lean Launcher
+ENTRYPOINT ["dotnet", "QuantConnect.Lean.Launcher.dll"]
+CMD ["--config", "config.json"]

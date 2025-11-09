@@ -1,0 +1,42 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "environment": {
+      "value": "staging"
+    },
+    "location": {
+      "value": "eastus"
+    },
+    "algorithmTypeName": {
+      "value": "ExperimentalAlgorithm"
+    },
+    "algorithmLanguage": {
+      "value": "CSharp"
+    },
+    "containerCpu": {
+      "value": 2
+    },
+    "containerMemoryInGb": {
+      "value": 3
+    },
+    "enableDiagnostics": {
+      "value": true
+  },
+ "imageTag": {
+      "value": "staging"
+  },
+    "tags": {
+      "value": {
+        "Application": "QuantConnect-Lean",
+        "Environment": "Staging",
+      "ManagedBy": "Bicep",
+      "Owner": "LP",
+        "CostCenter": "Trading-Staging"
+      }
+    },
+"secrets": {
+      "value": {}
+    }
+  }
+}

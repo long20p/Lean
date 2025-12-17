@@ -55,7 +55,7 @@ Deploy the base infrastructure (ACR, Storage, Key Vault, Log Analytics):
 Build the Docker image and push it to ACR:
 
 ```powershell
-.\Deployment\scripts\deploy-staged.ps1 -Environment dev -Stage image -ImageTag v1.0.0
+.\Deployment\scripts\deploy-staged.ps1 -Environment dev -Location eastus -Stage image -ImageTag v1.0.0
 ```
 
 **Requirements:**
@@ -74,7 +74,7 @@ Build the Docker image and push it to ACR:
 Deploy the container instance using the pushed image:
 
 ```powershell
-.\Deployment\scripts\deploy-staged.ps1 -Environment dev -Stage container -ImageTag v1.0.0
+.\Deployment\scripts\deploy-staged.ps1 -Environment dev -Location eastus -Stage container -ImageTag v1.0.0
 ```
 
 **Requirements:**

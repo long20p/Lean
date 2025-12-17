@@ -23,13 +23,13 @@ RUN apt-get update
 WORKDIR /Lean
 
 # Build argument for configuration (Debug or Release)
-ARG CONFIGURATION=Debug
+ARG CONFIGURATION=Release
 
 # Copy all built binaries from the specified configuration
 COPY Launcher/bin/${CONFIGURATION}/ ./
 
 # Copy configuration file
-COPY Launcher/config.docker.json ./config.json
+COPY Launcher/config.json ./config.json
 
 # Optional: Copy data directory for backtesting
 COPY Data ./Data

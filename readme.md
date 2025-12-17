@@ -185,6 +185,31 @@ A full explanation of the Python installation process can be found in the [Algor
 
 Seamlessly develop locally in your favorite development environment, with full autocomplete and debugging support to quickly and easily identify problems with your strategy. Please see the [CLI Home](https://www.lean.io/cli) for more information.
 
+## Random live data feed for paper trading
+
+If you want to exercise your live/paper trading workflows without wiring a brokerage, Lean now includes a configurable data queue handler that emits random ticks for any subscribed symbol.
+
+1. In `Launcher/config.json`, set the global `"environment"` value to `"live-paper-random"`. This environment reuses the paper brokerage stack but routes market data through `QuantConnect.Lean.Engine.DataFeeds.Queues.RandomDataQueueHandler`.
+2. Adjust the optional `random-data-*` knobs near the top of `config.json` to shape the stream (for example `random-data-initial-price`, `random-data-price-step`, `random-data-interval-ms`, and spread/volume bounds).
+3. Run your algorithm normally (for example via `dotnet run --project Launcher` or the provided VS Code tasks). Any `AddEquity`, `AddCrypto`, etc. calls will start receiving pseudo-random trade/quote ticks at the cadence you configured.
+
+The handler produces a bounded random walk per symbol, emits trades plus quotes (respecting each security type's default tick types), and keeps exchange timestamps aligned using the market-hours database so portfolio logic behaves like a real feed.
+
+Need a ready-to-run sample? Use `Algorithm.CSharp/CustomAlgo/RandomFeedLiveInsightsAlgorithm.cs`. It subscribes to a configurable manual universe, applies a fast/slow SMA crossover on the random ticks, and only emits insights so you can validate live result pipelines without sending orders.
+
+## Tiingo live data feed for paper trading
+
+Lean includes a data queue handler that fetches real-time price data from Tiingo's IEX API. This allows you to use standard `AddEquity()` calls while Tiingo provides the actual market data feed.
+
+1. In `Launcher/config.json`, set the global `"environment"` value to `"live-paper-tiingo"`. This environment uses the paper brokerage with Tiingo as the data source via `QuantConnect.Lean.Engine.DataFeeds.Queues.TiingoDataQueueHandler`.
+2. Ensure your Tiingo API token is configured in the `"tiingo-auth-token"` setting.
+3. Adjust optional Tiingo settings like `"tiingo-feed-interval-ms"` (default 5000ms) to control how frequently data is fetched from the API.
+4. Run your algorithm normally with standard equity subscriptions (`AddEquity("SPY", Resolution.Minute)`). The handler will fetch real-time IEX data from Tiingo and emit trade/quote ticks.
+
+The handler respects market hours, provides both trade and quote ticks, and handles multiple symbols efficiently by batching API calls. It's ideal for testing live trading strategies with real market data without connecting to a live brokerage.
+
+For a ready-to-run sample, use `Algorithm.CSharp/CustomAlgo/TiingoEquityFeedAlgorithm.cs`. It uses standard `AddEquity()` calls, applies EMA crossover signals, and logs both bar and tick data received from Tiingo's IEX feed.
+
 ## Issues and Feature Requests ##
 
 Please submit bugs and feature requests as an issue to the [Lean Repository][5]. Before submitting an issue, please read the instructions to ensure it is not duplicated.

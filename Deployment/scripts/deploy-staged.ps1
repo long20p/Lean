@@ -240,6 +240,15 @@ function Build-PushImage {
     Write-Host "=============================================" -ForegroundColor Cyan
     Write-Host ""
     
+    # Build solution in Release configuration
+    Write-Host "Building solution in Release configuration..." -ForegroundColor Yellow
+    dotnet build "$RootPath\QuantConnect.Lean.sln" -c Release
+    if ($LASTEXITCODE -ne 0) {
+        Write-Error "Solution build failed"
+    }
+    Write-Host "✓ Solution built successfully" -ForegroundColor Green
+    Write-Host ""
+
     # Load infrastructure outputs if not provided
     if (-not $InfraOutputs) {
         if (-not (Test-Path $InfraOutputsFile)) {
@@ -254,7 +263,7 @@ function Build-PushImage {
     
     Write-Host "Container Registry: $acrLoginServer" -ForegroundColor Yellow
     Write-Host ""
-    
+  
     # Login to ACR
     Write-Host "Logging in to Azure Container Registry..." -ForegroundColor Yellow
     Write-Output $acrPassword | docker login $acrLoginServer --username $acrUsername --password-stdin

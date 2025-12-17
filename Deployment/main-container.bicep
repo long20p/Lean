@@ -121,7 +121,7 @@ module containerInstance 'modules/container-instance.bicep' = {
     algorithmTypeName: algorithmTypeName
     algorithmLanguage: algorithmLanguage
     environment: environment
-    restartPolicy: environment == 'prod' ? 'Always' : 'OnFailure'
+    restartPolicy: environment == 'prod' ? 'Always' : 'Never'
   }
 }
 

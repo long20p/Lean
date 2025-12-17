@@ -218,7 +218,7 @@ namespace QuantConnect.Lean.Engine.Setup
 
                 Log.Trace($"BrokerageSetupHandler.Setup(): {message}");
 
-                algorithm.Debug(message);
+                parameters.ResultHandler.DebugMessage(message);
                 if (accountCurrency != null && accountCurrency != algorithm.AccountCurrency)
                 {
                     algorithm.SetAccountCurrency(accountCurrency);
@@ -375,8 +375,13 @@ namespace QuantConnect.Lean.Engine.Setup
                 var cashBalance = brokerage.GetCashBalance();
                 foreach (var cash in cashBalance)
                 {
-                    Log.Trace($"BrokerageSetupHandler.Setup(): Setting {cash.Currency} cash to {cash.Amount}");
+                    if (!CashAmountUtil.ShouldAddCashBalance(cash, algorithm.AccountCurrency))
+                    {
+                        Log.Trace($"BrokerageSetupHandler.Setup(): Skipping {cash.Currency} cash because quantity is zero");
+                        continue;
+                    }
 
+                    Log.Trace($"BrokerageSetupHandler.Setup(): Setting {cash.Currency} cash to {cash.Amount}");
                     algorithm.Portfolio.SetCash(cash.Currency, cash.Amount, 0);
                 }
             }

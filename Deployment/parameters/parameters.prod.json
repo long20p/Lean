@@ -1,0 +1,43 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "environment": {
+   "value": "prod"
+    },
+    "location": {
+      "value": "eastus"
+    },
+    "algorithmTypeName": {
+      "value": "MomentumBasedFrameworkAlgorithm"
+    },
+ "algorithmLanguage": {
+      "value": "CSharp"
+    },
+    "containerCpu": {
+      "value": 2
+ },
+    "containerMemoryInGb": {
+      "value": 4
+    },
+    "enableDiagnostics": {
+      "value": true
+    },
+    "imageTag": {
+      "value": "prod"
+    },
+    "tags": {
+      "value": {
+        "Application": "QuantConnect-Lean",
+      "Environment": "Production",
+        "ManagedBy": "Bicep",
+        "Owner": "LP",
+     "CostCenter": "Trading-Prod",
+        "Criticality": "High"
+    }
+  },
+    "secrets": {
+      "value": {}
+    }
+  }
+}

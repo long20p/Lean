@@ -153,7 +153,8 @@ namespace QuantConnect.Data.Custom.Tiingo
             }
 
             var tiingoTicker = TiingoSymbolMapper.GetTiingoTicker(config.Symbol);
-            var source = Invariant($"https://api.tiingo.com/tiingo/daily/{tiingoTicker}/prices?startDate={startDate:yyyy-MM-dd}&token={Tiingo.AuthCode}");
+            //var source = Invariant($"https://api.tiingo.com/tiingo/daily/{tiingoTicker}/prices?startDate={startDate:yyyy-MM-dd}&token={Tiingo.AuthCode}");
+            var source = Invariant($"https://api.tiingo.com/iex/{tiingoTicker}/prices?startDate={startDate:yyyy-MM-dd}&resampleFreq=1hour&token={Tiingo.AuthCode}");
             return new SubscriptionDataSource(source, SubscriptionTransportMedium.RemoteFile, FileFormat.UnfoldingCollection);
         }
 

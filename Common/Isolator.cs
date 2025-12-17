@@ -136,7 +136,7 @@ namespace QuantConnect
                             isolatorLimitResult.CurrentTimeStepElapsed,
                             (int)Math.Ceiling(OS.CpuUsage)));
 
-                    memoryLogger = utcNow.AddMinutes(1);
+                    memoryLogger = utcNow.AddMinutes(30);
                 }
 
                 // check to see if we're within other custom limits defined by the caller

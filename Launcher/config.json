@@ -6,7 +6,7 @@
   // two predefined environments, 'backtesting' and 'live', feel free
   // to add more!
 
-  "environment": "backtesting", // "live-paper", "backtesting", "live-interactive", "live-interactive-iqfeed"
+  "environment": "live-paper", // "live-paper", "backtesting", "live-interactive", "live-interactive-iqfeed"
 
   // ************************************************
   // ************ Configs for debugging *************
@@ -14,7 +14,7 @@
   "debug-mode": true,
   "algorithm-creation-timeout": 3600,
   "algorithm-manager-time-loop-maximum": 60,
-  "results-destination-folder": "C:\\GitRepo\\Finance\\LeanFork\\Results",
+  "results-destination-folder": "Results",
   // ************************************************
 
   // algorithm class selector
@@ -51,6 +51,19 @@
   "data-channel-provider": "DataChannelProvider",
   "object-store": "QuantConnect.Lean.Engine.Storage.LocalObjectStore",
   "data-aggregator": "QuantConnect.Lean.Engine.DataFeeds.AggregationManager",
+
+  // random live data feed defaults
+  "random-data-initial-price": 100.0,
+  "random-data-price-step": 0.25,
+  "random-data-drift": 0.0,
+  "random-data-spread-percent": 0.0025,
+  "random-data-interval-ms": 500,
+  "random-data-min-trade-size": 1,
+  "random-data-max-trade-size": 500,
+  "random-data-min-quote-size": 1,
+  "random-data-max-quote-size": 500,
+  "random-data-min-price": 0,
+  "random-data-max-price": 0,
 
   // limits on number of symbols to allow
   "symbol-minute-limit": 10000,
@@ -341,6 +354,8 @@
     // defines the 'live-paper' environment
     "live-paper": {
       "live-mode": true,
+      "debug-mode": false,
+      "algorithm-type-name": "TiingoMinuteFeedAlgorithm",
 
       // the paper brokerage requires the BacktestingTransactionHandler
       "live-mode-brokerage": "PaperBrokerage",
@@ -348,7 +363,25 @@
       "setup-handler": "QuantConnect.Lean.Engine.Setup.BrokerageSetupHandler",
       "result-handler": "QuantConnect.Lean.Engine.Results.LiveTradingResultHandler",
       "data-feed-handler": "QuantConnect.Lean.Engine.DataFeeds.LiveTradingDataFeed",
-      "data-queue-handler": [ "QuantConnect.Lean.Engine.DataFeeds.Queues.LiveDataQueue" ],
+      "data-queue-handler": [ "QuantConnect.Lean.Engine.DataFeeds.Queues.TiingoMinuteDataQueueHandler" ],
+      "real-time-handler": "QuantConnect.Lean.Engine.RealTime.LiveTradingRealTimeHandler",
+      "transaction-handler": "QuantConnect.Lean.Engine.TransactionHandlers.BacktestingTransactionHandler"
+    },
+
+    // defines the 'live-paper-docker' environment
+    "live-paper-docker": {
+      "live-mode": true,
+      "debug-mode": false,
+      "data-folder": "Data",
+      "algorithm-type-name": "TiingoEquityFeedAlgorithm",
+
+      // the paper brokerage requires the BacktestingTransactionHandler
+      "live-mode-brokerage": "PaperBrokerage",
+
+      "setup-handler": "QuantConnect.Lean.Engine.Setup.BrokerageSetupHandler",
+      "result-handler": "QuantConnect.Lean.Engine.Results.LiveTradingResultHandler",
+      "data-feed-handler": "QuantConnect.Lean.Engine.DataFeeds.LiveTradingDataFeed",
+      "data-queue-handler": [ "QuantConnect.Lean.Engine.DataFeeds.Queues.TiingoDataQueueHandler" ],
       "real-time-handler": "QuantConnect.Lean.Engine.RealTime.LiveTradingRealTimeHandler",
       "transaction-handler": "QuantConnect.Lean.Engine.TransactionHandlers.BacktestingTransactionHandler"
     },
